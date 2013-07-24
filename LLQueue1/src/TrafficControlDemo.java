@@ -13,21 +13,31 @@ public class TrafficControlDemo {
 		CLLQueue<Car> qS = new CLLQueue<Car>();
 		CLLQueue<Car> qE = new CLLQueue<Car>();
 		CLLQueue<Car> qW = new CLLQueue<Car>();
-		Runnable r1 = new Increase(qN, rand.nextInt(5));
+		Runnable r1 = new Increase(qN, rand.nextInt(10));
 		Thread t1 = new Thread(r1);
-		Runnable r2 = new Increase(qE, rand.nextInt(5));
+		Runnable r2 = new Increase(qE, rand.nextInt(10));
 		Thread t2 = new Thread(r2);
-		Runnable r3 = new Increase(qS, rand.nextInt(5));
+		Runnable r3 = new Increase(qS, rand.nextInt(10));
 		Thread t3 = new Thread(r3);
-		Runnable r4 = new Increase(qW, rand.nextInt(5));
+		Runnable r4 = new Increase(qW, rand.nextInt(10));
 		Thread t4 = new Thread(r4);
 
 		t1.start();
 		t2.start();
 		t3.start();
 		t4.start();
+		
+		try {
+			t1.join();
+			t2.join();
+			t3.join();
+			t4.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+	
+		}
 		// making sure that not getting from before enqueue
-		while ((t1.isAlive() || t2.isAlive() || t3.isAlive() || t4.isAlive())||(!qN.isEmpty())||(!qE.isEmpty())||(!qW.isEmpty())||(!qS.isEmpty())) {
+		//while ((t1.isAlive() || t2.isAlive() || t3.isAlive() || t4.isAlive())||(!qN.isEmpty())||(!qE.isEmpty())||(!qW.isEmpty())||(!qS.isEmpty())) {
 			try {
 				nCar = qN.getFront();
 				nCar.setWaitTime(System.currentTimeMillis());
@@ -58,21 +68,15 @@ public class TrafficControlDemo {
 			}
 
 			// Largest waiting time to dequeue
+			// by sorting and searching for the max
+				// handle the cars who have arrived to the stop sign at the same time
 			
-		}
+		//}
 
 	
 
-		try {
-			t1.join();
-			t2.join();
-			t3.join();
-			t4.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
+		
 		// aCar.setWaitTime(System.currentTimeMillis());
 		System.out.println("North: \n" + qN);
 		System.out.println("South:\n " + qS);
